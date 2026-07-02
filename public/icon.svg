@@ -1,38 +1,26 @@
-<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: black; }
+      .foreground { fill: white; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: white; }
+      .foreground { fill: black; }
+    }
+  </style>
+  <g clip-path="url(#clip0_7960_43945)">
+    <rect class="background" width="180" height="180" rx="37" />
+    <g style="transform: scale(95%); transform-origin: center">
+      <path class="foreground"
+        d="M101.141 53H136.632C151.023 53 162.689 64.6662 162.689 79.0573V112.904H148.112V79.0573C148.112 78.7105 148.098 78.3662 148.072 78.0251L112.581 112.898C112.701 112.902 112.821 112.904 112.941 112.904H148.112V126.672H112.941C98.5504 126.672 86.5638 114.891 86.5638 100.5V66.7434H101.141V100.5C101.141 101.15 101.191 101.792 101.289 102.422L137.56 66.7816C137.255 66.7563 136.945 66.7434 136.632 66.7434H101.141V53Z" />
+      <path class="foreground"
+        d="M65.2926 124.136L14 66.7372H34.6355L64.7495 100.436V66.7372H80.1365V118.47C80.1365 126.278 70.4953 129.958 65.2926 124.136Z" />
+    </g>
+  </g>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1F4A44"/>
-      <stop offset="55%" stop-color="#173B36"/>
-      <stop offset="100%" stop-color="#DD6B20"/>
-    </linearGradient>
-    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-      <stop offset="0%" stop-color="#7FD8C8"/>
-      <stop offset="100%" stop-color="#3FA593"/>
-    </linearGradient>
-    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.28"/>
-    </filter>
+    <clipPath id="clip0_7960_43945">
+      <rect width="180" height="180" fill="white" />
+    </clipPath>
   </defs>
-
-  <!-- Background circle -->
-  <circle cx="512" cy="512" r="512" fill="url(#bg)"/>
-
-  <!-- Ballot box (bottom shape) -->
-  <g filter="url(#softShadow)">
-    <rect x="272" y="470" width="480" height="340" rx="46" fill="url(#box)"/>
-  </g>
-
-  <!-- Slot notch at top of box -->
-  <rect x="404" y="450" width="216" height="60" rx="18" fill="#173B36"/>
-
-  <!-- Up arrow inside box -->
-  <g fill="#FBF3E7">
-    <path d="M512 560 L610 668 L556 668 L556 730 L468 730 L468 668 L414 668 Z"/>
-  </g>
-
-  <!-- Checkmark badge (top card) -->
-  <g filter="url(#softShadow)">
-    <rect x="372" y="238" width="280" height="252" rx="34" fill="#FBF3E7" stroke="#173B36" stroke-width="10"/>
-  </g>
-  <path d="M438 366 L494 422 L594 310" fill="none" stroke="url(#box)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

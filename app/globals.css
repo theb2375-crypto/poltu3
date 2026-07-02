@@ -60,6 +60,198 @@
   --radius: 0.625rem;
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Buoyant idle float — eased like an object bobbing in still air, with a
+   slight settle-overshoot at the bottom for a sense of weight */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.6deg) scale(1);
+  }
+  20% {
+    transform: translateY(-10px) rotate(-0.6deg) scale(1.006);
+  }
+  50% {
+    transform: translateY(-24px) rotate(1.3deg) scale(1.016);
+  }
+  72% {
+    transform: translateY(-9px) rotate(0.4deg) scale(1.006);
+  }
+  88% {
+    transform: translateY(2px) rotate(-0.9deg) scale(0.998);
+  }
+}
+
+/* The floor shadow breathes opposite to the float, grounding the hand */
+@keyframes shadow-breathe {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scaleX(0.78);
+    opacity: 0.26;
+  }
+  88% {
+    transform: scaleX(1.04);
+    opacity: 0.6;
+  }
+}
+
+/* Sonar rings that ripple out from the phone screen */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* A light beam that periodically sweeps across the phone glass */
+@keyframes shine-sweep {
+  0%,
+  58% {
+    transform: translateX(-180%) skewX(-18deg);
+    opacity: 0;
+  }
+  64% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    transform: translateX(300%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+/* Infinite pan for the perspective floor grid */
+@keyframes grid-pan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 56px;
+  }
+}
+
+/* Tiny ember particles drifting upward around the hero */
+@keyframes particle-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-48vh) translateX(var(--drift, 20px)) scale(0.35);
+    opacity: 0;
+  }
+}
+
+/* Wrist sway — damped pendulum physics: each swing loses amplitude the way
+   a relaxed wrist naturally settles, before re-energizing at the loop start */
+@keyframes hand-sway {
+  0% {
+    transform: rotate(-1.8deg);
+  }
+  22% {
+    transform: rotate(1.5deg);
+  }
+  42% {
+    transform: rotate(-1.1deg);
+  }
+  60% {
+    transform: rotate(0.8deg);
+  }
+  76% {
+    transform: rotate(-0.5deg);
+  }
+  89% {
+    transform: rotate(0.3deg);
+  }
+  100% {
+    transform: rotate(-1.8deg);
+  }
+}
+
+/* Fingers micro-grip: an irregular double-squeeze so the hand feels alive */
+@keyframes hand-grip {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  38% {
+    transform: scale(1.013);
+  }
+  55% {
+    transform: scale(1.004);
+  }
+  70% {
+    transform: scale(1.009);
+  }
+}
+
+/* Screen light spilling onto the fingers — breathes like a live display */
+@keyframes screen-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+/* Thumb-tap ripple expanding from the screen */
+@keyframes tap-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.85;
+    border-width: 3px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* Notification cards bobbing on their own rhythm around the phone */
+@keyframes card-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(calc(var(--tilt, 0deg) + 1.5deg));
+  }
+}
+
+/* Draw-on SVG path for journey connectors */
+@keyframes dash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -72,10 +264,5 @@
   html {
     @apply bg-background font-sans;
     scroll-behavior: smooth;
-    overflow-x: hidden;
-  }
-  body {
-    overflow-x: hidden;
-    max-width: 100vw;
   }
 }

@@ -7,6 +7,7 @@ import {
   Users,
 } from 'lucide-react'
 import { SectionHeader } from '@/components/section-header'
+import { TiltCard } from '@/components/tilt-card'
 
 const features = [
   {
@@ -52,20 +53,20 @@ export function Features() {
         />
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <div
+            <TiltCard
               key={f.title}
-              className="group rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/40"
+              className="group relative h-full rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_40px_-12px] hover:shadow-primary/30"
             >
-              <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+              <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-transform duration-300 [transform:translateZ(24px)] group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
                 <f.icon className="h-5 w-5" aria-hidden="true" />
               </div>
-              <h3 className="mb-2 text-base font-bold tracking-tight">
+              <h3 className="mb-2 text-base font-bold tracking-tight [transform:translateZ(16px)]">
                 {f.title}
               </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-muted-foreground [transform:translateZ(8px)]">
                 {f.desc}
               </p>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </div>

@@ -8,6 +8,7 @@ import { Logo } from '@/components/logo'
 const links = [
   { href: '#problem', label: 'Problem' },
   { href: '#app', label: 'The App' },
+  { href: '#journey', label: 'Blueprint' },
   { href: '#features', label: 'Features' },
   { href: '#how', label: 'How It Works' },
   { href: '#roadmap', label: 'Roadmap' },
