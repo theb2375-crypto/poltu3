@@ -9,41 +9,33 @@ const EASE = [0.22, 1, 0.36, 1] as const
 
 const SESSIONS = [
   {
-    id: 'first-ballot',
-    title: 'The First Ballot',
-    person: 'Asha Verma',
-    tagline: 'NEW VOICE, PUNE',
-    desc: 'A 24-year-old teacher files her nomination with a ₹5,000 deposit — and discovers that in her constituency, ideas finally outweigh money.',
+    id: 'run-on-ideas',
+    title: 'Run on Your Ideas',
+    desc: 'Any citizen can file a nomination for a ₹5,000 refundable deposit — so a seat is won on ideas and conviction, not the size of a war chest.',
     video:
       'https://videos.pexels.com/video-files/3252919/3252919-hd_1280_720_25fps.mp4',
     alt: 'A young woman speaking passionately during a community discussion',
   },
   {
-    id: 'hundred-hands',
-    title: 'A Hundred Hands',
-    person: 'Ravi Kulkarni',
-    tagline: 'DONOR COLLECTIVE',
-    desc: 'One chai-stall conversation becomes a hundred small donations. Every rupee is tracked, every bill approved by the people who gave it.',
+    id: 'funded-by-many',
+    title: 'Funded by Many',
+    desc: 'Campaigns powered by thousands of small donations — every rupee tracked, and every expense approved by the people who gave it.',
     video:
       'https://videos.pexels.com/video-files/852122/852122-hd_1280_720_30fps.mp4',
     alt: 'Friends sharing tea and conversation around a cafe table',
   },
   {
-    id: 'ink-and-iron',
-    title: 'Ink & Iron',
-    person: 'Meera Joshi',
-    tagline: 'FREE PRESS PROJECT',
-    desc: 'Deep in the old city, a donation-powered printing press delivers free newspapers to every door — and collects them back each month to recycle.',
+    id: 'a-free-press',
+    title: 'A Free Press',
+    desc: 'Donation-powered newspapers and magazines, delivered free — bringing local candidates and the issues that matter to every doorstep.',
     video:
       'https://videos.pexels.com/video-files/1721294/1721294-hd_1280_720_25fps.mp4',
     alt: 'A grand old press building rising over the city streets',
   },
   {
-    id: 'open-stage',
-    title: 'The Open Stage',
-    person: 'Arjun Nair',
-    tagline: 'TOWN HALL SERIES',
-    desc: 'In a purpose-built auditorium, every candidate gets the same stage and the same minutes. Equal airtime, by design — not by luck.',
+    id: 'an-equal-stage',
+    title: 'An Equal Stage',
+    desc: 'Purpose-built town halls where every candidate gets the same platform and the same minutes. Equal airtime, by design — not by luck.',
     video:
       'https://videos.pexels.com/video-files/8716433/8716433-hd_1280_720_25fps.mp4',
     alt: 'A candidate addressing an audience from a conference stage',
@@ -188,7 +180,7 @@ export function CitizenSessions() {
         {/* Story copy + navigation */}
         <div className="relative text-center md:text-left">
           <p className="mb-6 text-xs font-bold uppercase tracking-[0.18em] text-primary [text-shadow:0_1px_12px_rgba(0,0,0,0.6)]">
-            Dispatches
+            What We're Building
           </p>
           <div className="min-h-[220px] md:min-h-[260px]">
             <AnimatePresence mode="wait">
@@ -222,10 +214,10 @@ export function CitizenSessions() {
 
           <div className="mt-8 flex flex-col items-center gap-8 md:items-start">
             <Link
-              href="#journey"
+              href="#how"
               className="group inline-flex items-center gap-1 text-lg font-bold text-foreground underline underline-offset-8 transition-colors hover:text-primary"
             >
-              Read the story
+              See how it works
             </Link>
             <div className="flex items-center gap-3">
               <button

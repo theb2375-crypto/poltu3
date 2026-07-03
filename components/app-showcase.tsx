@@ -37,7 +37,7 @@ export function AppShowcase() {
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <SectionHeader
           label="The App"
-          title="22+ screens. Built for real democratic action."
+          title="Built for real democratic action."
           sub="Your constituency, your candidates, your donations — all in one place."
         />
         <ScrollRevealGroup

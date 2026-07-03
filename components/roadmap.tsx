@@ -4,13 +4,13 @@ import { SectionHeader } from '@/components/section-header'
 const phases = [
   {
     phase: 'Phase 01 — Design',
-    title: '22+ Screens, Fully Designed',
+    title: 'Fully Designed',
     desc: 'Onboarding, candidate profiles, forums, events, donations, and feed — every flow mapped end to end.',
     status: 'complete' as const,
   },
   {
     phase: 'Phase 02 — Beta',
-    title: '5-City Pilot',
+    title: 'Beta Pilot',
     desc: 'Candidate verification, donation escrow, and the constituency feed go live for early registered users.',
     status: 'active' as const,
   },

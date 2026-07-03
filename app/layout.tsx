@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: 'PoltuReform — Democracy, Reimagined',
   description:
     'Contest elections for a ₹5,000 refundable deposit. Back candidates you believe in. Track every rupee transparently. For Indian citizens.',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
@@ -34,6 +33,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  // Allow pinch-zoom so the site stays accessible on mobile
+  maximumScale: 5,
   colorScheme: 'dark',
   themeColor: '#101413',
 }

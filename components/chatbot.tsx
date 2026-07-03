@@ -12,9 +12,19 @@ const SUGGESTIONS = [
   'How can I become a candidate?',
 ]
 
+// Rotating one-liners that pop up beside the launcher to pull people in.
+const TEASERS = [
+  '👋 New here? I can explain PoltuReform in 30 seconds.',
+  '💡 Curious how you can contest for just ₹5,000?',
+  '🙋 Have a question? Ask me anything — I’m here to help.',
+]
+
 export function Chatbot() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
+  const [showTeaser, setShowTeaser] = useState(false)
+  const [teaserDismissed, setTeaserDismissed] = useState(false)
+  const [teaserIndex, setTeaserIndex] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -33,6 +43,33 @@ export function Chatbot() {
   useEffect(() => {
     if (open) inputRef.current?.focus()
   }, [open])
+
+  // Pop the teaser bubble once the user scrolls past the first screen (onto the
+  // "second page"), unless they've already opened or dismissed it.
+  useEffect(() => {
+    if (open || teaserDismissed) {
+      setShowTeaser(false)
+      return
+    }
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.9) {
+        setShowTeaser(true)
+      }
+    }
+    onScroll() // in case the page is already scrolled
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [open, teaserDismissed])
+
+  // Gently rotate the teaser lines while it's on screen.
+  useEffect(() => {
+    if (!showTeaser) return
+    const t = setInterval(
+      () => setTeaserIndex((i) => (i + 1) % TEASERS.length),
+      4500,
+    )
+    return () => clearInterval(t)
+  }, [showTeaser])
 
   function submit(text: string) {
     const trimmed = text.trim()
@@ -177,14 +214,58 @@ export function Chatbot() {
         </form>
       </div>
 
+      {/* Attention-grabbing teaser bubble */}
+      {!open && showTeaser && (
+        <div className="fixed bottom-24 right-4 z-50 flex max-w-[16rem] items-start gap-1 duration-300 animate-in fade-in slide-in-from-bottom-2 md:right-6">
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(true)
+              setTeaserDismissed(true)
+            }}
+            className="group relative rounded-2xl rounded-br-sm border border-border bg-card px-3 py-2 text-left text-xs font-medium leading-snug shadow-2xl transition-transform hover:-translate-y-0.5 hover:border-primary/40"
+          >
+            <span
+              key={teaserIndex}
+              className="block duration-500 animate-in fade-in"
+            >
+              {TEASERS[teaserIndex]}
+            </span>
+            {/* Little tail pointing toward the launcher */}
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1.5 right-4 size-3 rotate-45 border-b border-r border-border bg-card"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={() => setTeaserDismissed(true)}
+            aria-label="Dismiss message"
+            className="shrink-0 rounded-full bg-secondary p-1 text-muted-foreground shadow transition-colors hover:text-foreground"
+          >
+            <X className="size-3" aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       {/* Floating toggle button */}
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => !v)
+          setTeaserDismissed(true)
+        }}
         className="fixed bottom-6 right-4 z-50 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 md:right-6"
         aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
         aria-expanded={open}
       >
+        {/* Pinging badge to draw the eye while the teaser is active */}
+        {!open && showTeaser && (
+          <span className="absolute -right-0.5 -top-0.5 flex size-3.5">
+            <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75" />
+            <span className="relative inline-flex size-3.5 rounded-full border-2 border-background bg-primary" />
+          </span>
+        )}
         {open ? (
           <X className="size-6" aria-hidden="true" />
         ) : (

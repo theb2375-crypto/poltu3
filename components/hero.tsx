@@ -202,7 +202,7 @@ export function Hero() {
               className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary"
               aria-hidden="true"
             />
-            Beta launching in 5 cities
+            Launching soon
           </motion.p>
           <AnimatedText
             as="h1"
@@ -219,7 +219,8 @@ export function Hero() {
           >
             Contest elections for a ₹5,000 refundable deposit — not crores.
             Back the candidates you believe in, and track every rupee they
-            spend, transparently.
+            spend, transparently. We&apos;re launching soon — and won&apos;t stop
+            until every citizen, everywhere, can take part.
           </motion.p>
           <motion.div
             custom={3}
@@ -255,18 +256,12 @@ export function Hero() {
           <motion.dl
             custom={4}
             variants={fadeUp}
-            className="mt-12 grid w-full max-w-md grid-cols-3 gap-6 border-t border-border pt-8"
+            className="mt-12 grid w-full max-w-md grid-cols-2 gap-6 border-t border-border pt-8"
           >
             <div>
               <dt className="text-xs text-muted-foreground">To contest</dt>
               <dd className="mt-1 text-2xl font-bold tracking-tight">
                 <StatCounter value={5000} prefix="₹" />
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">App screens</dt>
-              <dd className="mt-1 text-2xl font-bold tracking-tight">
-                <StatCounter value={22} suffix="+" />
               </dd>
             </div>
             <div>

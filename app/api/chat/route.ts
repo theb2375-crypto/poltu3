@@ -5,6 +5,8 @@ import {
   toUIMessageStream,
   type UIMessage,
 } from 'ai'
+// Free Gemini provider. Reads the GOOGLE_GENERATIVE_AI_API_KEY env var.
+import { google } from '@ai-sdk/google'
 
 export const maxDuration = 30
 
@@ -29,7 +31,9 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json()
 
   const result = streamText({
-    model: 'openai/gpt-5.4-mini',
+    // Free-tier Gemini model. Swap for whatever your AI Studio account offers
+    // (e.g. 'gemini-2.0-flash') if this id isn't available to you.
+    model: google('gemini-2.5-flash'),
     system: SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
   })

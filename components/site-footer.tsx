@@ -69,15 +69,15 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'FAQ', href: '#faq' },
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Terms of Service', href: '/terms' },
     ],
   },
   {
     title: 'Get In Touch',
     links: [
       { label: 'Join Waitlist', href: '#waitlist' },
-      { label: 'Contact', href: '#' },
+      { label: 'Contact', href: 'mailto:support.poltu@gmail.com' },
     ],
   },
 ]
@@ -97,6 +97,15 @@ export function SiteFooter() {
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               A platform for any citizen ready to run, fund, or rally — without
               a war chest or a party badge.
+            </p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Have a question? Email us at{' '}
+              <a
+                href="mailto:support.poltu@gmail.com"
+                className="font-semibold text-foreground underline decoration-primary/40 underline-offset-4 transition-colors hover:text-primary"
+              >
+                support.poltu@gmail.com
+              </a>
             </p>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
@@ -125,33 +134,33 @@ export function SiteFooter() {
           <p className="text-xs text-muted-foreground">
             Made for Indian Democracy · © 2026 PoltuReform
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <a
-              href="https://youtube.com"
+              href="https://youtube.com/@poltuindia"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="PoltuReform on YouTube"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
             >
-              <YoutubeIcon className="h-4 w-4" aria-hidden="true" />
+              <YoutubeIcon className="h-6 w-6" aria-hidden="true" />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="PoltuReform on Instagram"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
             >
-              <InstagramIcon className="h-4 w-4" aria-hidden="true" />
+              <InstagramIcon className="h-6 w-6" aria-hidden="true" />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="PoltuReform on X (Twitter)"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
             >
-              <TwitterIcon className="h-4 w-4" aria-hidden="true" />
+              <TwitterIcon className="h-6 w-6" aria-hidden="true" />
             </a>
           </div>
         </div>

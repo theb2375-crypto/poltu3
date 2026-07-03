@@ -264,5 +264,8 @@
   html {
     @apply bg-background font-sans;
     scroll-behavior: smooth;
+    /* Guard against stray horizontal scroll on mobile.
+       `clip` (not `hidden`) keeps position: sticky working. */
+    overflow-x: clip;
   }
 }

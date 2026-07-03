@@ -2,24 +2,35 @@
 
 import { useState } from 'react'
 import { Check, Loader2 } from 'lucide-react'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
 import { SectionHeader } from '@/components/section-header'
 
 export function Waitlist() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>(
-    'idle',
-  )
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'done' | 'invalid' | 'error'
+  >('idle')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus('error')
+      setStatus('invalid')
       return
     }
     setStatus('loading')
-    // Simulated submit — wire to a database or email service for production.
-    await new Promise((r) => setTimeout(r, 700))
-    setStatus('done')
+    try {
+      // Store the signup in the Firestore "waitlist" collection.
+      await addDoc(collection(db, 'waitlist'), {
+        email: email.trim().toLowerCase(),
+        createdAt: serverTimestamp(),
+        source: 'landing-page',
+      })
+      setStatus('done')
+    } catch (err) {
+      console.error('Waitlist submit failed:', err)
+      setStatus('error')
+    }
   }
 
   return (
@@ -52,13 +63,17 @@ export function Waitlist() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value)
-              if (status === 'error') setStatus('idle')
+              if (status === 'invalid' || status === 'error') setStatus('idle')
             }}
             placeholder="you@example.com"
             disabled={status === 'done'}
             className="h-12 flex-1 rounded-md border border-input bg-secondary/50 px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-ring disabled:opacity-60"
-            aria-invalid={status === 'error'}
-            aria-describedby={status === 'error' ? 'waitlist-error' : undefined}
+            aria-invalid={status === 'invalid' || status === 'error'}
+            aria-describedby={
+              status === 'invalid' || status === 'error'
+                ? 'waitlist-error'
+                : undefined
+            }
           />
           <button
             type="submit"
@@ -74,12 +89,14 @@ export function Waitlist() {
             {status === 'done' ? 'Joined!' : 'Join Waitlist'}
           </button>
         </form>
-        {status === 'error' && (
+        {(status === 'invalid' || status === 'error') && (
           <p
             id="waitlist-error"
             className="mt-3 text-center text-sm text-destructive"
           >
-            Please enter a valid email address.
+            {status === 'invalid'
+              ? 'Please enter a valid email address.'
+              : 'Something went wrong. Please try again.'}
           </p>
         )}
         {status === 'done' && (
