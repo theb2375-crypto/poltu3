@@ -20,7 +20,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore'
-import { auth, db } from '@/lib/firebase'
+import { db, getFirebaseAuth } from '@/lib/firebase'
 import { CLIPPINGS_COLLECTION, type Clipping } from '@/lib/clippings'
 
 // Shared Tailwind classes, matching the waitlist form styling.
@@ -34,7 +34,7 @@ export default function AdminPage() {
   const [authReady, setAuthReady] = useState(false)
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
+    const unsub = onAuthStateChanged(getFirebaseAuth(), (u) => {
       setUser(u)
       setAuthReady(true)
     })
@@ -67,7 +67,7 @@ function LoginForm() {
     e.preventDefault()
     setStatus('loading')
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password)
+      await signInWithEmailAndPassword(getFirebaseAuth(), email.trim(), password)
       // onAuthStateChanged in the parent swaps this view for the dashboard.
     } catch (err) {
       console.error('Login failed:', err)
@@ -250,7 +250,7 @@ function Dashboard({ user }: { user: User }) {
           </p>
         </div>
         <button
-          onClick={() => signOut(auth)}
+          onClick={() => signOut(getFirebaseAuth())}
           className="inline-flex h-10 items-center gap-2 rounded-md border border-border px-4 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
         >
           <LogOut className="h-4 w-4" />

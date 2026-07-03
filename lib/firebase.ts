@@ -18,7 +18,16 @@ const firebaseConfig = {
 const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig)
 
 export const db: Firestore = getFirestore(app)
+
 // Auth is used by the /admin panel to sign the owner in before they can
-// add or remove news clippings.
-export const auth: Auth = getAuth(app)
+// add or remove news clippings. It is initialized lazily (on first call in
+// the browser) rather than at import time: getAuth() throws
+// `auth/invalid-api-key` when the NEXT_PUBLIC_FIREBASE_* env vars are absent,
+// which would otherwise crash the production build while prerendering /admin.
+let authInstance: Auth | undefined
+export function getFirebaseAuth(): Auth {
+  if (!authInstance) authInstance = getAuth(app)
+  return authInstance
+}
+
 export default app
