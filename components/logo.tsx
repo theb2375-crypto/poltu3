@@ -7,48 +7,33 @@ export function Logo({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <defs>
-        <linearGradient
-          id="plg"
-          x1="0"
-          y1="0"
-          x2="160"
-          y2="160"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%" stopColor="#5ECBB8" />
-          <stop offset="100%" stopColor="#2E7A6C" />
-        </linearGradient>
-      </defs>
-      <rect width="160" height="160" rx="38" fill="url(#plg)" />
+      {/* Mint app tile, matching the splash / onboarding screens */}
+      <rect width="160" height="160" rx="40" fill="#34E0A1" />
       <rect
-        x="1.5"
-        y="1.5"
-        width="157"
-        height="157"
-        rx="36.5"
+        x="1.25"
+        y="1.25"
+        width="157.5"
+        height="157.5"
+        rx="38.75"
         stroke="white"
-        strokeOpacity="0.14"
+        strokeOpacity="0.16"
         strokeWidth="1.5"
         fill="none"
       />
-      <rect x="36" y="34" width="22" height="92" rx="11" fill="white" />
-      <path
-        d="M 58 34 A 34 34 0 0 1 58 90"
-        stroke="white"
-        strokeWidth="22"
-        fill="none"
-        strokeLinecap="round"
+
+      {/* Ballot card dropping into the box */}
+      <rect
+        x="58"
+        y="44"
+        width="44"
+        height="44"
+        rx="10"
+        transform="rotate(45 80 66)"
+        fill="#0B1210"
       />
-      <circle cx="122" cy="122" r="16" fill="#FF9933" />
-      <circle
-        cx="122"
-        cy="122"
-        r="7"
-        stroke="#0A3380"
-        strokeWidth="2"
-        fill="none"
-        opacity="0.55"
+      <path
+        d="M44 90 L80 98 L116 90 L116 106 Q116 110 112 110 L48 110 Q44 110 44 106 Z"
+        fill="#0B1210"
       />
     </svg>
   )

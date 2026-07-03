@@ -17,6 +17,8 @@ import { ScrollProgress } from '@/components/scroll-progress'
 import { ScrollReveal } from '@/components/scroll-reveal'
 import { TiltOnScroll } from '@/components/tilt-on-scroll'
 import { ScrollScene3DLoader as ScrollScene3D } from '@/components/scroll-scene-3d-loader'
+import { NewsClippings } from '@/components/news-clippings'
+import { CitizenSessions } from '@/components/citizen-sessions'
 
 export default function Page() {
   return (
@@ -39,12 +41,14 @@ export default function Page() {
           </ScrollReveal>
         </TiltOnScroll>
         <Journey />
+        <NewsClippings />
         <TiltOnScroll>
           <ScrollReveal direction="up">
             <Features />
           </ScrollReveal>
         </TiltOnScroll>
         <Vision />
+        <CitizenSessions />
         <TiltOnScroll intensity={6}>
           <ScrollReveal direction="right">
             <HowItWorks />

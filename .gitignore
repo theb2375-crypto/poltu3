@@ -13,3 +13,13 @@ __v0_jsx-dev-runtime.ts
 node_modules
 .next/
 .DS_Store
+
+# Local backups / duplicates — not part of the project
+*.zip
+/poltu3/
+/.claude/
+app/globals copy.css
+
+# Build cache & duplicate lockfile (project uses pnpm)
+tsconfig.tsbuildinfo
+package-lock.json
