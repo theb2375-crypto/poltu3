@@ -13,32 +13,32 @@ const SESSIONS = [
     title: 'Run on Your Ideas',
     desc: 'Any citizen can file a nomination for a ₹5,000 refundable deposit — so a seat is won on ideas and conviction, not the size of a war chest.',
     video:
-      'https://videos.pexels.com/video-files/3252919/3252919-hd_1280_720_25fps.mp4',
-    alt: 'A young woman speaking passionately during a community discussion',
+      'https://videos.pexels.com/video-files/20613696/20613696-hd_1280_720_30fps.mp4',
+    alt: 'A busy street in an Indian city, alive with people, stalls and rickshaws',
   },
   {
     id: 'funded-by-many',
     title: 'Funded by Many',
     desc: 'Campaigns powered by thousands of small donations — every rupee tracked, and every expense approved by the people who gave it.',
     video:
-      'https://videos.pexels.com/video-files/852122/852122-hd_1280_720_30fps.mp4',
-    alt: 'Friends sharing tea and conversation around a cafe table',
+      'https://videos.pexels.com/video-files/33998875/14422586_1920_1080_25fps.mp4',
+    alt: 'An aerial view of a vast crowd of people gathered together in India',
   },
   {
     id: 'a-free-press',
     title: 'A Free Press',
     desc: 'Donation-powered newspapers and magazines, delivered free — bringing local candidates and the issues that matter to every doorstep.',
     video:
-      'https://videos.pexels.com/video-files/1721294/1721294-hd_1280_720_25fps.mp4',
-    alt: 'A grand old press building rising over the city streets',
+      'https://videos.pexels.com/video-files/3936483/3936483-hd_1280_720_30fps.mp4',
+    alt: 'A printing press rolling out fresh pages',
   },
   {
     id: 'an-equal-stage',
     title: 'An Equal Stage',
     desc: 'Purpose-built town halls where every candidate gets the same platform and the same minutes. Equal airtime, by design — not by luck.',
     video:
-      'https://videos.pexels.com/video-files/8716433/8716433-hd_1280_720_25fps.mp4',
-    alt: 'A candidate addressing an audience from a conference stage',
+      'https://videos.pexels.com/video-files/20201541/20201541-hd_1280_720_30fps.mp4',
+    alt: 'An aerial view of a village festival gathering in India',
   },
 ] as const
 
