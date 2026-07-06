@@ -265,7 +265,21 @@
     @apply bg-background font-sans;
     scroll-behavior: smooth;
     /* Guard against stray horizontal scroll on mobile.
-       `clip` (not `hidden`) keeps position: sticky working. */
-    overflow-x: clip;
+       The clip must live on BODY too: decorative elements wider than the
+       viewport (section scrims, slide-in reveals) otherwise expand the
+       mobile layout viewport, so the page pans left/right and the fixed
+       header drifts off-screen. `clip` (not `hidden`) keeps
+       position: sticky working; `hidden` is the fallback for older
+       mobile browsers that don't support `clip`. */
+    overflow-x: hidden;
+  }
+  body {
+    overflow-x: hidden;
+  }
+  @supports (overflow: clip) {
+    html,
+    body {
+      overflow-x: clip;
+    }
   }
 }
