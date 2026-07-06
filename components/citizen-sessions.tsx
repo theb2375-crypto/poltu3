@@ -13,8 +13,8 @@ const SESSIONS = [
     title: 'Run on Your Ideas',
     desc: 'Any citizen can file a nomination for a ₹5,000 refundable deposit — so a seat is won on ideas and conviction, not the size of a war chest.',
     video:
-      'https://videos.pexels.com/video-files/20613696/20613696-hd_1280_720_30fps.mp4',
-    alt: 'A busy street in an Indian city, alive with people, stalls and rickshaws',
+      'https://videos.pexels.com/video-files/8716433/8716433-hd_1920_1080_25fps.mp4',
+    alt: 'A candidate delivering a speech to an audience',
   },
   {
     id: 'funded-by-many',

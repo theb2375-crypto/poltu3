@@ -105,11 +105,10 @@ export function Waitlist() {
           </p>
         )}
 
-        <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-2 gap-8 border-t border-border pt-12 text-center sm:grid-cols-4">
+        <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-12 text-center sm:grid-cols-3">
           {[
             ['3', 'User Roles'],
             ['8', 'Event Types'],
-            ['22+', 'App Screens'],
             ['₹0', 'To Contest'],
           ].map(([num, label]) => (
             <div key={label}>
