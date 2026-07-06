@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUp, ArrowDown } from 'lucide-react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+const ROTATE_MS = 9000
 
 const SESSIONS = [
   {
@@ -45,28 +45,17 @@ const SESSIONS = [
 export function CitizenSessions() {
   const prefersReducedMotion = useReducedMotion()
   const [index, setIndex] = useState(0)
-  const [direction, setDirection] = useState(1)
 
-  const go = useCallback((dir: number) => {
-    setDirection(dir)
-    setIndex((i) => (i + dir + SESSIONS.length) % SESSIONS.length)
+  const select = useCallback((i: number) => {
+    setIndex(i % SESSIONS.length)
   }, [])
 
-  // Jump straight to a dispatch by tapping its thumbnail
-  const select = useCallback(
-    (i: number) => {
-      setDirection(i >= index ? 1 : -1)
-      setIndex(i)
-    },
-    [index],
-  )
-
-  // Gentle auto-rotation
+  // Auto-advance; restarts whenever the visitor picks a clip themselves
   useEffect(() => {
     if (prefersReducedMotion) return
-    const t = setInterval(() => go(1), 9000)
-    return () => clearInterval(t)
-  }, [go, prefersReducedMotion])
+    const t = setTimeout(() => setIndex((i) => (i + 1) % SESSIONS.length), ROTATE_MS)
+    return () => clearTimeout(t)
+  }, [index, prefersReducedMotion])
 
   const s = SESSIONS[index]
 
@@ -74,211 +63,132 @@ export function CitizenSessions() {
     <section
       id="sessions"
       aria-labelledby="sessions-heading"
-      className="relative overflow-hidden border-t border-border py-24 md:py-36"
+      className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden border-t border-border"
     >
-      {/* Warm stage glow behind everything — kept inside the section so the
-          site background/theme stays untouched */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.06] blur-[140px]"
-      />
-
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-[1.25fr_0.85fr] md:gap-10 md:px-8">
-        {/* Floating video card */}
-        <div className="relative flex justify-center [perspective:1200px] md:justify-end md:pr-4">
-          {/* Ghost frame drifting behind */}
+      {/* Full-bleed rolling footage, crossfading between dispatches */}
+      <div aria-hidden="true" className="absolute inset-0 bg-black">
+        <AnimatePresence initial={false}>
           <motion.div
-            aria-hidden="true"
-            className="absolute -right-2 -top-10 hidden h-40 w-56 rounded-xl border border-border bg-card/60 blur-[2px] md:block"
-            animate={
-              prefersReducedMotion ? undefined : { y: [0, -12, 0], rotate: [2, 4, 2] }
-            }
-            transition={{ duration: 11, ease: 'easeInOut', repeat: Infinity }}
-          />
-          <AnimatePresence mode="popLayout" custom={direction}>
-            <motion.figure
+            key={s.id}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 1.1, ease: 'easeInOut' }}
+          >
+            <motion.video
+              src={s.video}
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              aria-label={s.alt}
+              className="h-full w-full object-cover"
+              animate={
+                prefersReducedMotion ? undefined : { scale: [1, 1.07] }
+              }
+              transition={{ duration: ROTATE_MS / 1000 + 2, ease: 'linear' }}
+            />
+          </motion.div>
+        </AnimatePresence>
+        {/* Scrim: bottom-heavy on mobile (copy sits low), left-heavy on desktop,
+            always blending into the page at the top/bottom edges */}
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-background/95 via-background/40 to-background/10 md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/25 md:bg-gradient-to-t md:from-background md:via-transparent md:to-background/70" />
+      </div>
+
+      {/* Story copy */}
+      <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pb-16 pt-32 md:px-8 md:pb-24 md:pt-40">
+        <p className="mb-6 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+          What We're Building
+        </p>
+        <div className="min-h-[240px] md:min-h-[280px]">
+          <AnimatePresence mode="wait">
+            <motion.div
               key={s.id}
-              custom={direction}
               initial={
                 prefersReducedMotion
                   ? { opacity: 0 }
-                  : {
-                      opacity: 0,
-                      y: direction * 140,
-                      rotateX: direction * -14,
-                      scale: 0.92,
-                      filter: 'blur(10px)',
-                    }
+                  : { opacity: 0, y: 36, filter: 'blur(8px)' }
               }
-              animate={{
-                opacity: 1,
-                y: 0,
-                rotateX: 0,
-                scale: 1,
-                filter: 'blur(0px)',
-              }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={
                 prefersReducedMotion
                   ? { opacity: 0 }
-                  : {
-                      opacity: 0,
-                      y: direction * -140,
-                      rotateX: direction * 12,
-                      scale: 0.92,
-                      filter: 'blur(10px)',
-                    }
+                  : { opacity: 0, y: -24, filter: 'blur(6px)' }
               }
-              transition={{ duration: 0.75, ease: EASE }}
-              className="relative w-full max-w-xl [transform-style:preserve-3d]"
+              transition={{ duration: 0.55, ease: EASE }}
             >
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? undefined
-                    : { y: [0, -10, 0], rotateZ: [-0.6, 0.6, -0.6] }
-                }
-                transition={{ duration: 9, ease: 'easeInOut', repeat: Infinity }}
-                className="relative overflow-hidden rounded-2xl border border-border shadow-[0_50px_120px_-30px_rgba(0,0,0,0.85)]"
+              <h2
+                id="sessions-heading"
+                className="max-w-2xl text-balance text-5xl font-extrabold leading-[1.02] tracking-tight [text-shadow:0_2px_28px_rgba(0,0,0,0.65)] md:text-6xl lg:text-7xl"
               >
-                <div className="relative aspect-[16/10] overflow-hidden bg-black">
-                  {/* Real rolling footage */}
-                  <video
-                    key={s.video}
-                    src={s.video}
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={s.alt}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10"
-                  />
-                  {/* Cinematic light sweep */}
-                  {!prefersReducedMotion && (
-                    <motion.span
-                      aria-hidden="true"
-                      className="absolute inset-y-0 w-1/3 -skew-x-12 bg-white/[0.05]"
-                      animate={{ left: ['-40%', '130%'] }}
-                      transition={{
-                        duration: 6.5,
-                        ease: 'easeInOut',
-                        repeat: Infinity,
-                        repeatDelay: 2.5,
-                      }}
-                    />
-                  )}
-                </div>
-              </motion.div>
-            </motion.figure>
+                {s.title}
+              </h2>
+              <p className="mt-6 max-w-md text-pretty text-base leading-relaxed text-foreground/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] md:text-lg">
+                {s.desc}
+              </p>
+              <Link
+                href="#how"
+                className="group mt-8 inline-flex items-center gap-1 text-lg font-bold text-foreground underline underline-offset-8 transition-colors hover:text-primary"
+              >
+                See how it works
+              </Link>
+            </motion.div>
           </AnimatePresence>
-        </div>
-
-        {/* Story copy + navigation */}
-        <div className="relative text-center md:text-left">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.18em] text-primary [text-shadow:0_1px_12px_rgba(0,0,0,0.6)]">
-            What We're Building
-          </p>
-          <div className="min-h-[220px] md:min-h-[260px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={s.id}
-                initial={
-                  prefersReducedMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: direction * 36, filter: 'blur(8px)' }
-                }
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={
-                  prefersReducedMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: direction * -28, filter: 'blur(6px)' }
-                }
-                transition={{ duration: 0.55, ease: EASE }}
-              >
-                <h2
-                  id="sessions-heading"
-                  className="text-balance text-5xl font-extrabold leading-[1.02] tracking-tight [text-shadow:0_2px_28px_rgba(0,0,0,0.65)] md:text-6xl lg:text-7xl"
-                >
-                  {s.title}
-                </h2>
-                <p className="mx-auto mt-6 max-w-md text-pretty text-base leading-relaxed text-muted-foreground [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] md:mx-0 md:text-lg">
-                  {s.desc}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="mt-8 flex flex-col items-center gap-8 md:items-start">
-            <Link
-              href="#how"
-              className="group inline-flex items-center gap-1 text-lg font-bold text-foreground underline underline-offset-8 transition-colors hover:text-primary"
-            >
-              See how it works
-            </Link>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="Previous citizen session"
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-foreground text-background transition-transform hover:scale-105 active:scale-95"
-              >
-                <ArrowUp className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Next citizen session"
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-foreground text-background transition-transform hover:scale-105 active:scale-95"
-              >
-                <ArrowDown className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <span className="ml-2 font-mono text-xs tabular-nums text-muted-foreground">
-                {String(index + 1).padStart(2, '0')} /{' '}
-                {String(SESSIONS.length).padStart(2, '0')}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Tap-to-choose strip — pick any dispatch, in any order */}
-      <div className="relative mx-auto mt-14 flex max-w-3xl flex-wrap items-center justify-center gap-3 px-5 md:mt-16 md:gap-4">
-        {SESSIONS.map((session, i) => (
-          <button
-            key={session.id}
-            type="button"
-            onClick={() => select(i)}
-            aria-label={`Show: ${session.title}`}
-            aria-pressed={i === index}
-            className={`group relative aspect-video w-28 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 sm:w-36 md:w-40 ${
-              i === index
-                ? 'border-primary opacity-100 shadow-[0_14px_34px_-12px_rgba(52,224,161,0.55)] ring-2 ring-primary/60'
-                : 'border-border opacity-55 hover:opacity-100'
-            }`}
-          >
-            <video
-              src={`${session.video}#t=1`}
-              muted
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-              className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                i === index ? '' : 'grayscale group-hover:grayscale-0'
+      {/* Filmstrip tabs — pick any dispatch; the bar shows time to the next one */}
+      <div className="relative mx-auto w-full max-w-6xl px-5 pb-8 md:px-8 md:pb-10">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+          {SESSIONS.map((session, i) => (
+            <button
+              key={session.id}
+              type="button"
+              onClick={() => select(i)}
+              aria-label={`Show: ${session.title}`}
+              aria-pressed={i === index}
+              className={`group relative overflow-hidden rounded-lg border px-3 pb-3 pt-4 text-left backdrop-blur-md transition-colors duration-300 md:px-4 ${
+                i === index
+                  ? 'border-primary/60 bg-background/55'
+                  : 'border-border/60 bg-background/30 hover:border-border hover:bg-background/50'
               }`}
-            />
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"
-            />
-            <span className="absolute inset-x-2 bottom-1.5 truncate text-left text-[10px] font-bold uppercase tracking-wide text-white/95 md:text-[11px]">
-              {session.title}
-            </span>
-          </button>
-        ))}
+            >
+              {/* Auto-advance progress bar along the top edge */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-0.5 bg-border/50"
+              />
+              {i === index && (
+                <motion.span
+                  key={s.id}
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 h-0.5 bg-primary"
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : ROTATE_MS / 1000,
+                    ease: 'linear',
+                  }}
+                />
+              )}
+              <span className="block font-mono text-[10px] tabular-nums text-muted-foreground">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span
+                className={`mt-1 block truncate text-xs font-bold uppercase tracking-wide transition-colors md:text-[13px] ${
+                  i === index
+                    ? 'text-foreground'
+                    : 'text-muted-foreground group-hover:text-foreground'
+                }`}
+              >
+                {session.title}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   )
