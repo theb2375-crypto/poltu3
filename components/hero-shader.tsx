@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useReducedMotion } from 'framer-motion'
 import * as THREE from 'three'
@@ -134,15 +134,35 @@ function AuroraPlane() {
 
 export function HeroShader() {
   const prefersReducedMotion = useReducedMotion()
+  const wrapper = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(true)
+
+  // The fbm shader is expensive; stop the render loop entirely once the
+  // hero has scrolled out of the viewport.
+  useEffect(() => {
+    const el = wrapper.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) =>
+      setInView(entry.isIntersecting),
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [prefersReducedMotion])
+
   if (prefersReducedMotion) return null
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+    <div
+      ref={wrapper}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+    >
       <Canvas
         orthographic
         camera={{ position: [0, 0, 1], zoom: 1 }}
-        gl={{ alpha: true, antialias: false }}
-        dpr={[1, 1.5]}
+        gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
+        dpr={[1, 1.25]}
+        frameloop={inView ? 'always' : 'never'}
       >
         <AuroraPlane />
       </Canvas>

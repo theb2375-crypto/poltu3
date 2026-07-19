@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useRef, useState, useEffect, type ReactNode } from 'react'
 import {
   motion,
   useScroll,
@@ -25,6 +25,17 @@ export function TiltOnScroll({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
+  // Tilting a whole section promotes it to a huge GPU layer; on touch
+  // devices that costs far more than the subtle effect is worth.
+  const [coarsePointer, setCoarsePointer] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(pointer: coarse)')
+    const update = () => setCoarsePointer(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -43,7 +54,7 @@ export function TiltOnScroll({
     [0.97, 1, 1, 0.97],
   )
 
-  if (prefersReducedMotion) {
+  if (prefersReducedMotion || coarsePointer) {
     return <div className={className}>{children}</div>
   }
 
@@ -54,7 +65,6 @@ export function TiltOnScroll({
           rotateX,
           scale,
           transformStyle: 'preserve-3d',
-          willChange: 'transform',
         }}
       >
         {children}

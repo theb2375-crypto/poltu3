@@ -54,6 +54,8 @@ export function Chatbot() {
     const onScroll = () => {
       if (window.scrollY > window.innerHeight * 0.9) {
         setShowTeaser(true)
+        // One-shot: no need to keep listening on every scroll event
+        window.removeEventListener('scroll', onScroll)
       }
     }
     onScroll() // in case the page is already scrolled

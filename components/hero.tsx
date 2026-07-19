@@ -10,9 +10,9 @@ import {
   Users,
   ReceiptText,
 } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { AnimatedText } from '@/components/animated-text'
 import { StatCounter } from '@/components/stat-counter'
-import { HeroShader } from '@/components/hero-shader'
 import { HeroGrid } from '@/components/hero-grid'
 import { Magnetic } from '@/components/magnetic'
 import {
@@ -25,6 +25,13 @@ import {
 } from 'framer-motion'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+
+// Loaded lazily so three.js/react-three-fiber stay out of the initial
+// bundle — the aurora is decorative and can fade in a beat later.
+const HeroShader = dynamic(
+  () => import('@/components/hero-shader').then((m) => m.HeroShader),
+  { ssr: false },
+)
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32, filter: 'blur(6px)' },

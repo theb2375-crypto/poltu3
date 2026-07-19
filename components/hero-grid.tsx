@@ -15,8 +15,10 @@ export function HeroGrid() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-x-0 bottom-0 h-[46%] overflow-hidden [perspective:520px]"
     >
+      {/* Extra 56px (one grid cell) above the frame so the transform-based
+          pan never exposes a gap at the top edge */}
       <div
-        className={`absolute -inset-x-1/4 -bottom-1/4 top-0 origin-bottom [transform:rotateX(62deg)] ${
+        className={`absolute -inset-x-1/4 -bottom-1/4 -top-14 origin-bottom [transform:rotateX(62deg)] ${
           prefersReducedMotion ? '' : 'animate-[grid-pan_2.4s_linear_infinite]'
         }`}
         style={{

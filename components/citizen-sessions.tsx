@@ -1,8 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const ROTATE_MS = 9000
@@ -45,53 +50,60 @@ const SESSIONS = [
 export function CitizenSessions() {
   const prefersReducedMotion = useReducedMotion()
   const [index, setIndex] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  // Streaming + decoding full-HD video while the section is offscreen is a
+  // constant drain on scroll performance — only run it when (nearly) visible.
+  const inView = useInView(sectionRef, { margin: '25% 0px 25% 0px' })
 
   const select = useCallback((i: number) => {
     setIndex(i % SESSIONS.length)
   }, [])
 
-  // Auto-advance; restarts whenever the visitor picks a clip themselves
+  // Auto-advance while visible; restarts whenever the visitor picks a clip
   useEffect(() => {
-    if (prefersReducedMotion) return
+    if (prefersReducedMotion || !inView) return
     const t = setTimeout(() => setIndex((i) => (i + 1) % SESSIONS.length), ROTATE_MS)
     return () => clearTimeout(t)
-  }, [index, prefersReducedMotion])
+  }, [index, prefersReducedMotion, inView])
 
   const s = SESSIONS[index]
 
   return (
     <section
+      ref={sectionRef}
       id="sessions"
       aria-labelledby="sessions-heading"
       className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden border-t border-border"
     >
       {/* Full-bleed rolling footage, crossfading between dispatches */}
       <div aria-hidden="true" className="absolute inset-0 bg-black">
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={s.id}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 1.1, ease: 'easeInOut' }}
-          >
-            <motion.video
-              src={s.video}
-              muted
-              autoPlay
-              loop
-              playsInline
-              preload="metadata"
-              aria-label={s.alt}
-              className="h-full w-full object-cover"
-              animate={
-                prefersReducedMotion ? undefined : { scale: [1, 1.07] }
-              }
-              transition={{ duration: ROTATE_MS / 1000 + 2, ease: 'linear' }}
-            />
-          </motion.div>
-        </AnimatePresence>
+        {inView && (
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={s.id}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 1.1, ease: 'easeInOut' }}
+            >
+              <motion.video
+                src={s.video}
+                muted
+                autoPlay
+                loop
+                playsInline
+                preload="metadata"
+                aria-label={s.alt}
+                className="h-full w-full object-cover"
+                animate={
+                  prefersReducedMotion ? undefined : { scale: [1, 1.07] }
+                }
+                transition={{ duration: ROTATE_MS / 1000 + 2, ease: 'linear' }}
+              />
+            </motion.div>
+          </AnimatePresence>
+        )}
         {/* Scrim: bottom-heavy on mobile (copy sits low), left-heavy on desktop,
             always blending into the page at the top/bottom edges */}
         <div className="absolute inset-0 hidden bg-gradient-to-r from-background/95 via-background/40 to-background/10 md:block" />
@@ -161,7 +173,7 @@ export function CitizenSessions() {
                 aria-hidden="true"
                 className="absolute inset-x-0 top-0 h-0.5 bg-border/50"
               />
-              {i === index && (
+              {i === index && inView && (
                 <motion.span
                   key={s.id}
                   aria-hidden="true"

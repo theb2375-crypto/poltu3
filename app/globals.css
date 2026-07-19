@@ -139,13 +139,15 @@
   }
 }
 
-/* Infinite pan for the perspective floor grid */
+/* Infinite pan for the perspective floor grid.
+   Pans via transform (composited on the GPU) rather than
+   background-position, which would repaint the layer every frame. */
 @keyframes grid-pan {
   from {
-    background-position: 0 0;
+    transform: rotateX(62deg) translateY(0);
   }
   to {
-    background-position: 0 56px;
+    transform: rotateX(62deg) translateY(56px);
   }
 }
 
@@ -264,6 +266,14 @@
   html {
     @apply bg-background font-sans;
     scroll-behavior: smooth;
+  }
+  /* Anchor jumps instead of long smooth scrolls for reduced-motion users */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  html {
     /* Guard against stray horizontal scroll on mobile.
        The clip must live on BODY too: decorative elements wider than the
        viewport (section scrims, slide-in reveals) otherwise expand the

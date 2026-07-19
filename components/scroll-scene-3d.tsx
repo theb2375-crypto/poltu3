@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo, Suspense } from 'react'
+import { useRef, useMemo, useState, useEffect, Suspense } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { useReducedMotion } from 'framer-motion'
 import * as THREE from 'three'
@@ -51,6 +51,10 @@ function TurnablePage({
   const group = useRef<THREE.Group>(null)
   const mesh = useRef<THREE.Mesh>(null)
   const flipRef = useRef(0)
+  // Last flip value actually written to the geometry — lets us skip the
+  // per-vertex work entirely while this page is at rest (which, at any
+  // given scroll position, is almost every page).
+  const appliedFlip = useRef(-1)
 
   // Geometry hinged at the spine: x runs 0 → PAGE_WIDTH
   const geometry = useMemo(() => {
@@ -90,6 +94,10 @@ function TurnablePage({
       0.09,
     )
     const flip = flipRef.current
+
+    // Settled? Skip the vertex loop + normals recompute for this frame.
+    if (Math.abs(flip - appliedFlip.current) < 0.0005) return
+    appliedFlip.current = flip
 
     // Curl strength peaks mid-flip and relaxes flat at rest
     const curl = Math.sin(flip * Math.PI)
@@ -293,8 +301,20 @@ function Scene() {
 /* ------------------------------------------------------------------ */
 export function ScrollScene3D() {
   const prefersReducedMotion = useReducedMotion()
+  // The book sits behind a 40% background overlay, so on phones it is
+  // barely visible — but a fixed full-screen canvas is the single most
+  // expensive thing on a mobile GPU. Skip it there.
+  const [enabled, setEnabled] = useState(true)
 
-  if (prefersReducedMotion) return null
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px), (pointer: coarse)')
+    const update = () => setEnabled(!mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  if (prefersReducedMotion || !enabled) return null
 
   return (
     <div
@@ -303,8 +323,8 @@ export function ScrollScene3D() {
     >
       <Canvas
         camera={{ position: [0, 0, 8], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[1, 1.25]}
       >
         <Suspense fallback={null}>
           <Scene />
