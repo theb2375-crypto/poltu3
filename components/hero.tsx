@@ -236,7 +236,7 @@ export function Hero() {
           >
             <Magnetic strength={0.32}>
               <Link
-                href="#waitlist"
+                href="/app/"
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-6px] shadow-primary/50 transition-shadow hover:shadow-[0_0_36px_-4px] hover:shadow-primary/70"
               >
                 {/* Light sweep across the button on hover */}
@@ -244,7 +244,7 @@ export function Hero() {
                   aria-hidden="true"
                   className="absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/30 opacity-0 blur-sm transition-all duration-500 group-hover:left-[120%] group-hover:opacity-100"
                 />
-                Get Early Access
+                Login
                 <ArrowRight
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                   aria-hidden="true"

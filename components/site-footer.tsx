@@ -76,7 +76,7 @@ const columns = [
   {
     title: 'Get In Touch',
     links: [
-      { label: 'Join Waitlist', href: '#waitlist' },
+      { label: 'Login', href: '/app/' },
       { label: 'Contact', href: 'mailto:support.poltu@gmail.com' },
     ],
   },

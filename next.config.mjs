@@ -9,6 +9,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // The Flutter web app lives in public/app (built with --base-href /app/).
+  // The public folder doesn't auto-serve directory indexes, so route the
+  // bare /app paths to its index.html.
+  async rewrites() {
+    return [
+      { source: '/app', destination: '/app/index.html' },
+      { source: '/app/', destination: '/app/index.html' },
+    ]
+  },
 }
 
 export default nextConfig

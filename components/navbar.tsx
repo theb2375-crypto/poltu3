@@ -50,10 +50,10 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="#waitlist"
+            href="/app/"
             className="hidden rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:inline-flex"
           >
-            Join Waitlist
+            Login
           </Link>
           <button
             type="button"
@@ -81,11 +81,11 @@ export function Navbar() {
               </Link>
             ))}
             <Link
-              href="#waitlist"
+              href="/app/"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-md bg-primary px-3 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
-              Join Waitlist
+              Login
             </Link>
           </div>
         </div>
