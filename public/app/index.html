@@ -18,29 +18,38 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="PoltuReform — Democracy, Reimagined. Contest elections, back candidates, track every rupee.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="poltu_reform">
+  <meta name="apple-mobile-web-app-title" content="PoltuReform">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>poltu_reform</title>
+  <title>PoltuReform</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+  <!-- Razorpay Checkout (web): loaded up-front so PaymentService can open it
+       without waiting on a script fetch. Ignored on mobile builds. -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Boot splash: shows the app logo while main.dart.js downloads, removed
+       on flutter-first-frame. Inline styles so nothing else must load. -->
+  <div id="boot-splash" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#101613;z-index:9999;transition:opacity .3s">
+    <img src="icons/Icon-192.png" alt="PoltuReform" width="96" height="96" style="border-radius:22px;box-shadow:0 12px 40px rgba(0,0,0,.5)">
+    <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#e8f5ee;font-size:20px;font-weight:800;letter-spacing:-.3px">PoltuReform</div>
+    <div style="width:26px;height:26px;border:3px solid rgba(94,234,175,.25);border-top-color:#5eeaaf;border-radius:50%;animation:bootspin 1s linear infinite"></div>
+  </div>
+  <style>@keyframes bootspin{to{transform:rotate(360deg)}}</style>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var s = document.getElementById('boot-splash');
+      if (s) { s.style.opacity = '0'; setTimeout(function () { s.remove(); }, 300); }
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
